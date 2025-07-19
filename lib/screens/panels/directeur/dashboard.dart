@@ -13,21 +13,30 @@ class _DashboardPageState extends State<DashboardPage> {
   final _store = Stores();
 
   // Appel des méthodes getToken et getUser de la classe Stores
-     String token="";
-     String user="";
+  String token = "";
+  String user = "";
+
+  void verifyToken()async{
+    await _store.getToken().then((token){
+      setState(() {
+        token=token!;
+      });
+    });
+  }
+
+  void verifyUser()async{
+    await _store.getToken().then((user){
+      setState(() {
+        user = user.toString();
+      });
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    _store.getToken().then((value) {
-      setState(() {
-        token = value!;});
-    });
-    _store.getUser().then((value) {
-      setState(() {
-        user = value.toString() ?? "Aucun utilisateur trouvé";
-      });
-    });
+    verifyToken();
+    verifyUser();
   }
 
   @override
