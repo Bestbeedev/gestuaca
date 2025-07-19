@@ -29,7 +29,7 @@ class _SignupPageState extends State<SignupPage> {
     _passwordController.dispose();
     super.dispose();
   }
-   late String _errorMessage;
+   String _errorMessage='';
 
   void _submit() async {
 

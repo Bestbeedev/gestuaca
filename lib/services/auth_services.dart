@@ -58,6 +58,7 @@ class AuthService {
           'password': password,
         } ),
       );
+
       final responseData = json.decode(response.body);
       print(responseData);
       if (response.statusCode == 200) {
