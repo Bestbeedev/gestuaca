@@ -58,9 +58,10 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       // 5. Sauvegarde token + user
-      await _tokenStore.saveToken(result['token'] ?? '');
-      //await _tokenStore.saveUser(result['user'] ?? {});
+      await _tokenStore.saveToken(result['token'] ?? "");
+      await _tokenStore.saveUser(result['user'] ?? {});
 
+      //print(await _tokenStore.getUser());
       // 6. SnackBar de succès
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -74,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Text(
-              result['login'] ?? 'Connexion réussie',
+              result['message'] ?? 'Connexion réussie',
               style: TextStyle(color: Colors.green[600]),
             ),
           ),

@@ -56,6 +56,7 @@ class _SignupPageState extends State<SignupPage> {
         setState(() {
           _errorMessage = result['message'] ?? "Erreur lors de l'inscription";
         });
+        return;
       }
 
       // 5. Sauvegarde user
@@ -79,7 +80,7 @@ class _SignupPageState extends State<SignupPage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Text(
-              result['login'] ?? 'Connexion réussie',
+              result['message'] ?? 'Inscription réussie',
               style: TextStyle(color: Colors.green[600]),
             ),
           ),
@@ -92,6 +93,8 @@ class _SignupPageState extends State<SignupPage> {
             context,
             '/auth/login');
       }
+
+
     } catch (e) {
       // 8. Erreur réseau ou exception
       setState(() {
