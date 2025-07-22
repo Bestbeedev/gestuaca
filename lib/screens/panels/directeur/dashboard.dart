@@ -5,6 +5,7 @@ import '../../../stores/states.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
+
   @override
   State<DashboardPage> createState() => _DashboardPageState();
 }
@@ -17,18 +18,19 @@ class _DashboardPageState extends State<DashboardPage> {
   String token = "";
   String user = "";
 
-  void verifyToken()async{
-    await _store.getToken().then((token){
+  void verifyToken() async {
+    await _store.getToken().then((value) {
       setState(() {
-        token=token!;
+        token = value!;
       });
     });
   }
 
-  void verifyUser()async{
-    await _store.getToken().then((user){
+  void verifyUser() async {
+    await _store.getUser().then((value) {
       setState(() {
-        user = user.toString();
+        print('Value User: $value');
+        user = value.toString();
       });
     });
   }
@@ -162,6 +164,17 @@ class _DashboardPageState extends State<DashboardPage> {
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: Colors.black54),
                           textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/panels/students/dash'
+                              'board',
+                            );
+                          },
+                          child: Text('Go to students dashboard'),
                         ),
                       ],
                     ),

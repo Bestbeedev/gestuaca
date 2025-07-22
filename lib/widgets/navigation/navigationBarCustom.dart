@@ -12,7 +12,7 @@ class NavigationBarCustom extends StatelessWidget {
 
   const NavigationBarCustom({super.key,required this.currentIndex, required
   this.onTap, required this.icons, required this.activeIcons,this.backgroundColor = Colors.transparent,
-    this.color = Colors.blueAccent,this.colorIcons = Colors.white});
+    this.color = Colors.indigo,this.colorIcons = Colors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +20,14 @@ class NavigationBarCustom extends StatelessWidget {
       index: currentIndex,
       height: 65,
       backgroundColor: backgroundColor,
-      color: color,
+      color: Colors.indigo,
       onTap: (index) {
         onTap(index);
       },
       items: List.generate(icons.length,
           (index)=>Icon(
             currentIndex == index ? activeIcons[index] : icons[index],
-            size: 20,
+            size: 22,
             color: colorIcons,
           )
       )
