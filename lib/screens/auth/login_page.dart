@@ -14,7 +14,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _authService = AuthService();
-  final _tokenStore = Stores();
 
 
   final _usernameController = TextEditingController();
@@ -58,29 +57,32 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       // 5. Sauvegarde token + user
-      await _tokenStore.saveToken(result['token'] ?? "");
-      await _tokenStore.saveUser(result['user'] ?? {});
+      
+      await Store.setToken(result['token'] ?? "");
+      await Store.saveUser(result['user'] ?? "");
 
-      //print(await _tokenStore.getUser());
       // 6. SnackBar de succès
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          content: Container(
-            padding: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              color: Colors.green[100],
-              border: Border.all(color: Colors.green[300]!),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Text(
-              result['message'] ?? 'Connexion réussie',
-              style: TextStyle(color: Colors.green[600]),
+
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: Container(
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                color: Colors.green[100],
+                border: Border.all(color: Colors.green[300]!),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                result['message'] ?? 'Connexion réussie',
+                style: TextStyle(color: Colors.green[600]),
+              ),
             ),
           ),
-        ),
-      );
+        );
+      }
 
       // 7. Redirection si le widget est toujours monté
       if (mounted) {
@@ -142,17 +144,37 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                   ClipRRect(
+                    borderRadius: BorderRadius.circular(100.0),
+                    child: Image.asset(
+                      'assets/images/category/gestuacaLogo.png',
+                      width: 90,
+                      height: 90,
+                      scale: 2,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.transparent,
+                  backgroundImage:
+                  AssetImage
+                    ('assets/images/category/gestuacaLogo.png'),
+                ),
+
                 const SizedBox(height: 32),
+
                 Text(
                   "Connectez-vous",
                   style: GoogleFonts.inter(
-                    fontSize: 24,
+                    fontSize: 25,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 15),
                 Container(
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
@@ -162,7 +184,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: Text(
                     "Connectez-vous à votre compte pour et accéder à vos données.",
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: Colors.grey[800],
                     ),
@@ -225,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            backgroundColor: Colors.black,
+                            backgroundColor: Colors.indigo,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             textStyle: GoogleFonts.inter(fontSize: 16),
@@ -237,6 +259,21 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
+
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/auth/forgot-password');
+                    },
+                    child: Text(
+                      "Mot de passe oublier ?",
+                      style: GoogleFonts.inter(
+                        color: Colors.black,
+                        //decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ),
+                ),
 
                 /// Redirection link
                 Center(

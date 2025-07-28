@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'dart:developer' as developer;
 
 class AuthService {
   //Local Host --phone
@@ -61,7 +62,7 @@ class AuthService {
 
       final responseData = json.decode(response.body);
 
-      print(responseData);
+      developer.log('Login response: $responseData', name: 'AuthService');
 
       if (response.statusCode == 200) {
         return {
@@ -84,8 +85,3 @@ class AuthService {
     }
   }
 }
-
-// 'success' => true,
-// 'message' => 'Connexion réussie',
-// 'user'    => $user,
-// 'token'   => $token,
