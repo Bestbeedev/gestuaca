@@ -29,9 +29,9 @@ class _OnboardLayoutState extends State<OnboardLayout> {
             onPageChanged: (index) {
               setState(() {
                 onBoardingComplete = (index == 4);
-                if (index <= 4 && index > 0) {
+                if (index < 4) {
                   canSkip = true;
-                } else {
+                } else if(index==4) {
                   canSkip = false;
                 }
               });
@@ -158,6 +158,26 @@ class _OnboardLayoutState extends State<OnboardLayout> {
                   canSkip
                       ? GestureDetector(
                         onTap: () {
+                          _controller.jumpToPage(4); // Jump to the last page
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "Sauter",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(width: 2),
+                            Icon(Icons.navigate_next_outlined, color: Colors.blue),
+
+                          ],
+                        ),
+                      )
+                      : GestureDetector(
+                        onTap: () {
                           _controller.previousPage(
                             duration: Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
@@ -180,29 +200,7 @@ class _OnboardLayoutState extends State<OnboardLayout> {
                               ),
                             ),
                           ],
-                        )
-                      )
-                      : GestureDetector(
-                        onTap: () {
-                          _controller.jumpToPage(4); // Jump to the last page
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(
-                              Icons.skip_next_sharp,
-                              color: Colors.blue,
-                            ),
-                            SizedBox(width: 2),
-                            Text(
-                              "Sauter",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        )
+                        ),
                       ),
             ),
           ),

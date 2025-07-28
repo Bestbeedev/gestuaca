@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:gestuaca/screens/auth/forgot_password.dart';
 import 'package:gestuaca/screens/auth/login_page.dart';
 import 'package:gestuaca/screens/auth/signup_page.dart';
-import 'package:gestuaca/screens/home_page.dart';
+import 'package:gestuaca/screens/auth/user_type_info.dart';
 import 'package:gestuaca/screens/panels/directeur/dashboard.dart';
+import 'package:gestuaca/screens/panels/students/edit_profile.dart';
+import 'package:gestuaca/screens/panels/students/history_page.dart';
+import 'package:gestuaca/screens/panels/students/my_account.dart';
 import 'package:gestuaca/screens/panels/students/profile_page.dart';
 import 'package:gestuaca/screens/panels/students/students_layout.dart';
 import 'package:gestuaca/screens/partials/notifications_page.dart';
 import 'onboarding/onboard_layout.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '/stores/states.dart';
-import 'package:gestuaca/screens/panels/students/dashboard.dart';
 import 'package:gestuaca/screens/panels/teachers/dashboard.dart';
+import 'screens/splash_screen.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -31,16 +34,21 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: OnboardLayout(),
+      home: const SplashScreen(),
       initialRoute: '/',
       routes: {
-        '/home': (context) => const HomePage(),
+         '/onboardPage':(context)=> const OnboardLayout(),
+        '/my_account': (context) => const MyAccount(),
+        '/auth/user-type-info': (context) => const UserTypeInfoScreen(),
         '/auth/signup': (context) => const SignupPage(),
+        '/edit-profile': (context) => const EditProfileScreen(),
         '/auth/login': (context) => const LoginPage(),
+        '/auth/forgot-password':(context)=> const ForgotPasswordScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/notifications': (context) => const EmptyNotificationsScreen(),
         '/panels/directeur/dashboard': (context) => const DashboardPage(),
         '/panels/teachers/dashboard':(context)=>const DashboardTeachers(),
+        '/panels/students/history':(context)=>const HistoryPage(),
         '/panels/students/dashboard':(context)=>const StudentsLayout()
       },
     );

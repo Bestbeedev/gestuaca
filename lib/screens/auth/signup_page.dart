@@ -15,7 +15,6 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final _formKey = GlobalKey<FormState>();
   final _authService = AuthService();
-  final _userStore = Stores();
 
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -59,41 +58,44 @@ class _SignupPageState extends State<SignupPage> {
         return;
       }
 
-      // 5. Sauvegarde user
-      await _userStore.saveUser(
-        {
-          'name': _usernameController.text,
-          'email': _emailController.text,
-        },
-      );
-
+      // 5. Sauvegarde token + user
+      
+      await Store.setToken(result['token'] ?? "");
+      await Store.saveUser(result['user'] ?? "");
+      
       // 6. SnackBar de succès
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          content: Container(
-            padding: const EdgeInsets.all(12.0),
-            decoration: BoxDecoration(
-              color: Colors.green[100],
-              border: Border.all(color: Colors.green[300]!),
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: Text(
-              result['message'] ?? 'Inscription réussie',
-              style: TextStyle(color: Colors.green[600]),
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: Container(
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                color: Colors.green[100],
+                border: Border.all(color: Colors.green[300]!),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                result['message'] ?? 'Inscription réussie',
+                style: TextStyle(color: Colors.green[600]),
+              ),
             ),
           ),
-        ),
-      );
+        );
+      }
+
 
       // 7. Redirection si le widget est toujours monté
       if (mounted) {
         Navigator.pushReplacementNamed(
             context,
-            '/auth/login');
+            '/auth/user-type-info',
+          arguments: {
+            'email': _emailController.text.trim(),
+            'username': _usernameController.text.trim(),
+          },);
       }
-
 
     } catch (e) {
       // 8. Erreur réseau ou exception
