@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../stores/data.dart';
-import '../../../widgets/navigation/navigationBarCustom.dart';
+import '../../../widgets/navigation/navigation_bar_custom.dart';
 
 class DashboardTeachers extends StatefulWidget {
   const DashboardTeachers({super.key});

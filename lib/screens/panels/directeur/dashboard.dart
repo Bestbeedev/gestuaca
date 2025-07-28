@@ -1,7 +1,6 @@
 import 'package:gestuaca/stores/data.dart';
 import 'package:flutter/material.dart';
-import 'package:gestuaca/widgets/navigation/navigationBarCustom.dart';
-import '../../../stores/states.dart';
+import 'package:gestuaca/widgets/navigation/navigation_bar_custom.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -12,34 +11,13 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   int _currentIndex = 0;
-  final _store = Stores();
+
 
   // Appel des méthodes getToken et getUser de la classe Stores
-  String token = "";
-  String user = "";
-
-  void verifyToken() async {
-    await _store.getToken().then((value) {
-      setState(() {
-        token = value!;
-      });
-    });
-  }
-
-  void verifyUser() async {
-    await _store.getUser().then((value) {
-      setState(() {
-        print('Value User: $value');
-        user = value.toString();
-      });
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-    verifyToken();
-    verifyUser();
   }
 
   @override
@@ -160,7 +138,7 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                         SizedBox(height: 20),
                         Text(
-                          'Token and user : $token , $user',
+                          'Token and user : ',
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: Colors.black54),
                           textAlign: TextAlign.center,
