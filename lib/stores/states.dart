@@ -1,52 +1,53 @@
-
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Stores{
+class Store {
+  static const String _tokenKey = 'token';
+  static const String _userKey = 'user';
 
-  //Token management
-
-  Future<void> saveToken(String token) async {
+  static Future<void> setToken(String token) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
+    await prefs.setString(_tokenKey, token);
   }
 
-  Future<String?> getToken() async {
+  static Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+    return prefs.getString(_tokenKey);
   }
 
-  Future<void> deleteToken() async {
+  static Future<void> clearToken() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('token');
+    await prefs.remove(_tokenKey);
   }
 
-  //User management
-
-  Future<void> saveUser(Map<String, dynamic> user) async {
+  static Future<void> saveUser(Map<String, dynamic> user) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('user', user.toString());
+    String jsonUser = jsonEncode(user); // ✅ encode bien en JSON
+    await prefs.setString(_userKey, jsonUser);
   }
 
-  Future<Map<String, dynamic>?> getUser() async {
+  static Future<void> clearUser() async {
     final prefs = await SharedPreferences.getInstance();
-    String? userString = prefs.getString('user');
-    if (userString != null) {
-      // Convert the string back to a Map
-      return Map<String, dynamic>.from(userString as Map);
+    await prefs.remove(_userKey);
+  }
+
+  static Future<Map<String, dynamic>?> getUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? jsonUser = prefs.getString(_userKey);
+    if (jsonUser != null) {
+      try {
+        return jsonDecode(jsonUser);
+      } catch (e) {
+        print('Erreur de parsing utilisateur : $e');
+        await clearUser(); // Supprime les données invalides
+      }
     }
     return null;
   }
 
-  Future<void> deleteUser() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('user');
-  }
-
-  // Clear all data
-  Future<void> clearAll() async {
+  // Fonction pour supprimer toutes les données stockées
+  static Future<void> clearAll() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
   }
-
-
 }
