@@ -30,6 +30,10 @@
            controller: widget.controller,
            obscureText: widget.isObscure,
            decoration: InputDecoration(
+             suffixIcon: widget.isObscure
+                 ? const Icon(Icons.visibility_off, color: Colors.grey, size:
+             20)
+                 : null,
              hintText: widget.hintText,
              hintStyle: const TextStyle(fontSize: 13),
 
@@ -46,7 +50,7 @@
              focusedBorder: OutlineInputBorder(
                borderRadius: BorderRadius.circular(10.0),
                borderSide: const BorderSide(
-                 color: Colors.green,
+                 color: Colors.indigoAccent,
                  width: 1, // ✅ plus épais quand focus
                ),
              ),

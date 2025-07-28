@@ -11,7 +11,7 @@ class NavigationBarCustom extends StatelessWidget {
   final Color color;
 
   const NavigationBarCustom({super.key,required this.currentIndex, required
-  this.onTap, required this.icons, required this.activeIcons,this.backgroundColor = Colors.transparent,
+  this.onTap, required this.icons, required this.activeIcons,this.backgroundColor = Colors.white,
     this.color = Colors.indigo,this.colorIcons = Colors.white});
 
   @override
