@@ -39,15 +39,19 @@ final List<IconData> activeIconsTeachers = [
 
 final List<IconData> iconsStudents = [
   CupertinoIcons.house,
-  CupertinoIcons.archivebox,
-  CupertinoIcons.doc_on_doc,
+  CupertinoIcons.book,
+  CupertinoIcons.person_add,
   CupertinoIcons.money_dollar_circle,
 ];
 
 final List<IconData> activeIconsStudents = [
   CupertinoIcons.house_fill,
-  CupertinoIcons.archivebox_fill,
-  CupertinoIcons.doc_on_doc_fill,
+  CupertinoIcons.book_fill,
+  CupertinoIcons.person_add_solid,
   CupertinoIcons.money_dollar_circle_fill,
 ];
 
+// 'Accueil',
+// 'Matières',
+// 'Inscriptions',
+// 'Paiements',

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../services/auth_services.dart';
@@ -182,6 +183,7 @@ class _UserTypeInfoScreenState extends State<UserTypeInfoScreen> {
                         validator: _validatePhone,
                         hintText: 'Numéro de téléphone',
                         isObscure: false,
+                        prefixIcon: CupertinoIcons.phone,
                       ),
                       const SizedBox(height: 20),
                     CustomDropdownExample(controller: _typeController,
@@ -221,7 +223,6 @@ class _UserTypeInfoScreenState extends State<UserTypeInfoScreen> {
                           ),
                         ),
                       const SizedBox(height: 12),
-
                       /// Login Button
                       SizedBox(
                         width: double.infinity,
@@ -243,7 +244,6 @@ class _UserTypeInfoScreenState extends State<UserTypeInfoScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-
 
               ],
             ),

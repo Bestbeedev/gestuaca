@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/auth/custom_form_fields.dart';
@@ -49,6 +50,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+      ),
       backgroundColor: Colors.white,
       body: LogoWithTitle(
         title: 'Mot de passe oublié',
@@ -57,11 +62,12 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 "de passe ",
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
             child: Form(
               key: _formKey,
               child: CustomTextFormField(
                 controller: _emailController,
+                prefixIcon: CupertinoIcons.mail,
                 validator: _validateEmail,
                 hintText: 'Email',
               ),
@@ -75,6 +81,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                 controller: _passwordController,
                 validator: _validatePassword,
                 hintText: 'Nouveau mot de passe',
+               isObscure: true,
+                prefixIcon: CupertinoIcons.lock,
+
               ),
             ),
           ),
@@ -87,7 +96,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             },
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              backgroundColor: const Color(0xFF00BF6D),
+              backgroundColor: Colors.indigo,
               foregroundColor: Colors.white,
               minimumSize: const Size(double.infinity, 48),
               shape: const RoundedRectangleBorder(

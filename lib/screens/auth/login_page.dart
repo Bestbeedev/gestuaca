@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../stores/states.dart';
@@ -15,12 +16,12 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _authService = AuthService();
 
-
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
   final List<String> _formErrors = [];
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -30,25 +31,23 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-
   void _submit() async {
-    // 1. Réinitialise les erreurs du formulaire
     _formErrors.clear();
-
-    // 2. Valide les champs
     if (!_formKey.currentState!.validate()) {
-      setState(() {}); // Forcer le redraw si erreurs visibles
+      setState(() {});
       return;
     }
 
-    // 3. Appel API via AuthService
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final result = await _authService.login(
-       email:_emailController.text.trim(),
-        password: _passwordController.text
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
       );
 
-      // 4. Gestion des erreurs serveur (par exemple credentials invalides)
       if (result['success'] == false) {
         setState(() {
           _formErrors.add(result['message'] ?? 'Une erreur est survenue.');
@@ -56,14 +55,10 @@ class _LoginPageState extends State<LoginPage> {
         return;
       }
 
-      // 5. Sauvegarde token + user
-      
       await Store.setToken(result['token'] ?? "");
       await Store.saveUser(result['user'] ?? "");
 
-      // 6. SnackBar de succès
-
-      if(mounted){
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.transparent,
@@ -84,20 +79,17 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
 
-      // 7. Redirection si le widget est toujours monté
       if (mounted) {
-        Navigator.pushReplacementNamed(
-          context,
-          '/panels/directeur/dashboard',
-        );
+        Navigator.pushReplacementNamed(context, '/panels/directeur/dashboard');
       }
     } catch (e) {
-      // 8. Erreur réseau ou exception
       setState(() {
         _formErrors.add('Erreur de connexion. Veuillez réessayer.');
       });
     } finally {
-      setState(() {}); // Redessiner le formulaire avec les erreurs ou après succès
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -132,7 +124,6 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,27 +135,19 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                   ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
-                    child: Image.asset(
-                      'assets/images/category/gestuacaLogo.png',
-                      width: 90,
-                      height: 90,
-                      scale: 2,
-                      fit: BoxFit.cover,
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(53),
+                    child: CircleAvatar(
+                      radius: 65,
+                      backgroundImage: AssetImage(
+                        'assets/images/category/gestuacaLogo.png',
+                      ),
+                      backgroundColor: Colors.transparent,
                     ),
                   ),
-
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage:
-                  AssetImage
-                    ('assets/images/category/gestuacaLogo.png'),
                 ),
-
                 const SizedBox(height: 32),
-
                 Text(
                   "Connectez-vous",
                   style: GoogleFonts.inter(
@@ -197,12 +180,12 @@ class _LoginPageState extends State<LoginPage> {
                   key: _formKey,
                   child: Column(
                     children: [
-
                       CustomTextFormField(
                         controller: _emailController,
                         validator: _validateEmail,
                         hintText: 'Email',
                         isObscure: false,
+                        prefixIcon: CupertinoIcons.mail,
                       ),
                       const SizedBox(height: 20),
                       CustomTextFormField(
@@ -210,13 +193,16 @@ class _LoginPageState extends State<LoginPage> {
                         validator: _validatePassword,
                         hintText: 'Mot de passe',
                         isObscure: true,
+                        prefixIcon: CupertinoIcons.lock,
                       ),
                       const SizedBox(height: 12),
 
                       /// AuthService error (non lié aux champs)
-                      if (_formErrors.any((e) =>
-                      !e.toLowerCase().contains('email') &&
-                          !e.toLowerCase().contains('mot de passe')))
+                      if (_formErrors.any(
+                        (e) =>
+                            !e.toLowerCase().contains('email') &&
+                            !e.toLowerCase().contains('mot de passe'),
+                      ))
                         Container(
                           padding: const EdgeInsets.all(12),
                           width: double.infinity,
@@ -226,10 +212,11 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            _formErrors
-                                .firstWhere((e) =>
-                            !e.toLowerCase().contains('email') &&
-                                !e.toLowerCase().contains('mot de passe')),
+                            _formErrors.firstWhere(
+                              (e) =>
+                                  !e.toLowerCase().contains('email') &&
+                                  !e.toLowerCase().contains('mot de passe'),
+                            ),
                             style: const TextStyle(
                               color: Colors.red,
                               fontSize: 13,
@@ -242,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: _submit,
+                          onPressed: _isLoading ? null : _submit,
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
@@ -252,26 +239,51 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             textStyle: GoogleFonts.inter(fontSize: 16),
                           ),
-                          child: const Text("Se connecter"),
+                          child:
+                              _isLoading
+                                  ? const SizedBox(
+                                    width: 22,
+                                    height: 22,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.indigo,
+                                      backgroundColor: Colors.white,
+                                      strokeWidth: 2.5,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.indigo,
+                                      ),
+                                    ),
+                                  )
+                                  : const Text("Se connecter"),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 10),
 
                 Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/auth/forgot-password');
-                    },
-                    child: Text(
-                      "Mot de passe oublier ?",
-                      style: GoogleFonts.inter(
-                        color: Colors.black,
-                        //decoration: TextDecoration.underline,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Divider(color: Colors.grey[400], thickness: 1),
                       ),
-                    ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/auth/forgot-password');
+                        },
+                        child: Text(
+                          "Mot de passe oublier ?",
+                          style: GoogleFonts.inter(
+                            color: Colors.red,
+                            //decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+
+                      Expanded(
+                        child: Divider(color: Colors.grey[400], thickness: 1),
+                      ),
+                    ],
                   ),
                 ),
 

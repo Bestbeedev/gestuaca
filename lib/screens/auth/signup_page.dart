@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../stores/states.dart';
@@ -19,6 +20,7 @@ class _SignupPageState extends State<SignupPage> {
   final _usernameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isLoading = false;
 
 
   @override
@@ -35,11 +37,16 @@ class _SignupPageState extends State<SignupPage> {
     // 1. Réinitialise les erreurs du formulaire
     _errorMessage = "";
 
+
     // 2. Valide les champs
     if (!_formKey.currentState!.validate()) {
       setState(() {}); // Forcer le redraw si erreurs visibles
       return;
     }
+
+    setState(() {
+      _isLoading = true;
+    });
 
     // 3. Appel API via AuthService
     try {
@@ -103,7 +110,9 @@ class _SignupPageState extends State<SignupPage> {
         _errorMessage='Erreur de connexion. Veuillez réessayer.';
       });
     } finally {
-      setState(() {}); // Redessiner le formulaire avec les erreurs ou après succès
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -161,7 +170,18 @@ class _SignupPageState extends State<SignupPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 32),
+                SizedBox(height: 8,),
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(53),
+                    child: CircleAvatar(
+                      radius: 65,
+                      backgroundImage: AssetImage('assets/images/category/gestuacaLogo.png'),
+                      backgroundColor: Colors.transparent,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Text(
                   "Créez votre compte",
                   style: GoogleFonts.inter(
@@ -189,13 +209,6 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                // OR separator
-                Row(
-                  children: [
-                    const Expanded(child: Divider()),
-                  ],
-                ),
-                const SizedBox(height: 24),
                 // Formulaire
                 Form(
                   key: _formKey,
@@ -206,12 +219,14 @@ class _SignupPageState extends State<SignupPage> {
                         controller: _usernameController,
                         validator: _validateUsername,
                         hintText: 'Nom d\'utilisateur',
+                        prefixIcon: CupertinoIcons.person,
                       ),
                       const SizedBox(height: 20),
                       CustomTextFormField(
                         controller: _emailController,
                         validator: _validateEmail,
                         hintText: 'Email',
+                        prefixIcon: CupertinoIcons.mail,
                       ),
                       const SizedBox(height: 20),
                       CustomTextFormField(
@@ -219,6 +234,7 @@ class _SignupPageState extends State<SignupPage> {
                         validator: _validatePassword,
                         hintText: 'Mot de passe',
                         isObscure: true,
+                        prefixIcon: CupertinoIcons.lock,
                       ),
                       const SizedBox(height: 12),
                       // Error message for the whole form
@@ -246,17 +262,31 @@ class _SignupPageState extends State<SignupPage> {
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: _submit,
+                          onPressed: _isLoading ? null : _submit,
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0),
                             ),
-                            backgroundColor: Colors.black,
+                            backgroundColor: Colors.indigo,
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             textStyle: GoogleFonts.inter(fontSize: 16),
                           ),
-                          child: const Text("S'inscire"),
+                          child:
+                          _isLoading
+                              ? const SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: CircularProgressIndicator(
+                              color: Colors.indigo,
+                              backgroundColor: Colors.white,
+                              strokeWidth: 2.5,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.indigo,
+                              ),
+                            ),
+                          )
+                              : const Text("S'inscrire"),
                         ),
                       ),
                     ],
