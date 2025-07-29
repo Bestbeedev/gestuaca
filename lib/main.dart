@@ -5,7 +5,7 @@ import 'package:gestuaca/screens/auth/signup_page.dart';
 import 'package:gestuaca/screens/auth/user_type_info.dart';
 import 'package:gestuaca/screens/panels/directeur/dashboard.dart';
 import 'package:gestuaca/screens/panels/students/edit_profile.dart';
-import 'package:gestuaca/screens/panels/students/history_page.dart';
+import 'package:gestuaca/screens/panels/students/course_page.dart';
 import 'package:gestuaca/screens/panels/students/my_account.dart';
 import 'package:gestuaca/screens/panels/students/profile_page.dart';
 import 'package:gestuaca/screens/panels/students/students_layout.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
         '/notifications': (context) => const EmptyNotificationsScreen(),
         '/panels/directeur/dashboard': (context) => const DashboardPage(),
         '/panels/teachers/dashboard':(context)=>const DashboardTeachers(),
-        '/panels/students/history':(context)=>const HistoryPage(),
+        '/panels/students/history':(context)=>const CoursesPage(),
         '/panels/students/dashboard':(context)=>const StudentsLayout()
       },
     );

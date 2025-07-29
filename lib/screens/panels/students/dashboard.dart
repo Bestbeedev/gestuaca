@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gestuaca/screens/panels/students/history_page.dart';
+import 'package:gestuaca/screens/panels/students/course_page.dart';
 import '../../../stores/states.dart';
 
 class DashboardStudents extends StatefulWidget {
@@ -53,11 +53,95 @@ class _DashboardStudentsState extends State<DashboardStudents> {
                 ),
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: 15),
+              SizedBox(height: 20),
               Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                decoration: BoxDecoration(
+                  color: Colors.indigo.withOpacity(0.06),
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(
+                    color: Colors.grey[800]!.withOpacity(0.3),
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Année en cours',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.indigo,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.calendar_month,
+                              color: Colors.red,
+                              size: 13,
+                            ),
+                            const SizedBox(width: 2),
+                            Text(
+                              '2025-2026', // ou 'En attente'
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      thickness: 0.4,
+                      color: Colors.grey[800]!.withValues(alpha: 0.9),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Statut de l’inscription',
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.indigo,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.verified,
+                              color: Colors.green,
+                              size: 13,
+                            ),
+                            const SizedBox(width: 2),
+                            Text(
+                              'Validée', // ou 'En attente'
+                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 5),
+              Container(
+                alignment: Alignment.center,
                 width: double.infinity,
-                padding: EdgeInsets.all(18),
-                height: 130,
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                height: 115,
                 decoration: BoxDecoration(
                   color: Colors.indigo.withValues(alpha: 0.06),
                   borderRadius: BorderRadius.circular(20),
@@ -75,10 +159,13 @@ class _DashboardStudentsState extends State<DashboardStudents> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundImage: AssetImage(
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(15),
+                              child: Image.asset(
                                 'assets/images/category/profile.png',
+                                height: 70,
+                                width: 70,
+                                fit: BoxFit.cover,
                               ),
                             ),
                             Column(
@@ -87,8 +174,7 @@ class _DashboardStudentsState extends State<DashboardStudents> {
                               children: [
                                 Text(
                                   _user != null
-                                      ? _user!['name'] + ' '
-                                          + 'Wilfred'
+                                      ? _user!['name'] + ' ' + 'Wilfred'
                                       : 'Chargement'
                                           '...',
                                   style: TextStyle(
@@ -150,7 +236,6 @@ class _DashboardStudentsState extends State<DashboardStudents> {
                                     ),
                                   ],
                                 ),
-
                               ],
                             ),
                           ],
@@ -158,42 +243,11 @@ class _DashboardStudentsState extends State<DashboardStudents> {
                       ],
                     ),
                     SizedBox(height: 15),
-                    // Container(
-                    //   padding: EdgeInsets.all(10),
-                    //   decoration: BoxDecoration(
-                    //     borderRadius: BorderRadius.circular(20),
-                    //     color: Colors.black12,
-                    //     border: Border.all(
-                    //       color: Colors.white10.withValues(alpha: 0.3),
-                    //     ),
-                    //   ),
-                    //   child: Row(
-                    //     spacing: 5,
-                    //     children: [
-                    //       IconButton(
-                    //         onPressed: () {},
-                    //         icon: Icon(Icons.info),
-                    //         color: Colors.yellow,
-                    //       ),
-                    //       FilledButton(onPressed: () {}, child: Text("SIL")),
-                    //       FilledButton(
-                    //         onPressed: () {},
-                    //         child: Text(
-                    //           "Licence "
-                    //           "2",
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // ),
-
-                    // SizedBox(height: 10),
-                    //Divider(thickness: 0.4, color: Colors.white),
                   ],
                 ),
               ),
 
-              SizedBox(height: 25),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -216,7 +270,7 @@ class _DashboardStudentsState extends State<DashboardStudents> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const HistoryPage(),
+                              builder: (context) => const CoursesPage(),
                             ),
                           );
                         },
@@ -247,7 +301,7 @@ class _DashboardStudentsState extends State<DashboardStudents> {
                 ],
               ),
 
-              SizedBox(height: 15),
+              SizedBox(height: 10),
               CardsRecentPayments(price: '30.000CFA', date: '20-10-2024'),
               SizedBox(height: 15),
             ],
@@ -295,9 +349,13 @@ class CardsRecentPayments extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 16),
-      height: 160,
+      height: 185,
       decoration: BoxDecoration(
-        color: Colors.indigo,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [Colors.indigo, Colors.indigo[500]!],
+        ),
         border: Border.all(color: Colors.black38.withValues(alpha: 0.1)),
         borderRadius: BorderRadius.circular(20),
       ),
@@ -310,19 +368,30 @@ class CardsRecentPayments extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Motif',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.indigo.shade400,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: Colors.indigo[200]!.withValues(alpha: 0.4),
+                      ),
                     ),
-                    textAlign: TextAlign.start,
+                    child: Text(
+                      'Motif de transactions',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
                   ),
+                  SizedBox(height: 7),
                   Text(
-                    'Frais de Scolarite-T1',
+                    'Scolarite Tranche 1',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                      color: Colors.yellow,
                     ),
                     textAlign: TextAlign.start,
                   ),
@@ -335,7 +404,7 @@ class CardsRecentPayments extends StatelessWidget {
                 onPressed: () => _showBottomSheet(context),
                 icon: Icon(
                   Icons.arrow_forward_ios,
-                  color: Colors.black,
+                  color: Colors.indigo,
                   size: 12,
                 ),
               ),
@@ -350,15 +419,25 @@ class CardsRecentPayments extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Date ',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.indigo.shade400,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color:Colors.indigo[200]!.withValues(alpha: 0.4),
+                      ),
                     ),
-                    textAlign: TextAlign.start,
+                    child: Text(
+                      'Date ',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
                   ),
-
+                  SizedBox(height: 7),
                   Text(
                     date,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -372,15 +451,26 @@ class CardsRecentPayments extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Montant ',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.indigo.shade400,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color:Colors.indigo[200]!.withValues(alpha: 0.4),
+                      ),
                     ),
-                    textAlign: TextAlign.start,
-                  ),
 
+                    child: Text(
+                      'Montant ',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  SizedBox(height: 3),
                   Text(
                     price,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -458,8 +548,7 @@ class BottomSheetContent extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child:
-              ElevatedButton.icon(
+              child: ElevatedButton.icon(
                 onPressed: () {
                   // Logique pour télécharger le reçu
                   Navigator.pop(context); // Ferme le bottom sheet

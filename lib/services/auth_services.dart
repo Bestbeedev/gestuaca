@@ -3,11 +3,12 @@ import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
 class AuthService {
-  //Local Host --phone
-  //static const String baseUrl = 'http://10.227.138.210:8000/api';
-
+  //Local Host Citech
+  //static const String baseUrl = 'http://192.168.0.9:8000/api';
   //Host at home
   static const String baseUrl = 'http://192.168.100.7:8000/api';
+//Host at phone
+  ///static const String baseUrl = 'http://10.195.132.210:8000/api';
 
   Future<Map<String, dynamic>> register({
     required String name,
