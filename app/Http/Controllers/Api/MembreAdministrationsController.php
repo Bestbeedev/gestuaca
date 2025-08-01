@@ -12,7 +12,7 @@ class MembreAdministrationsController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**

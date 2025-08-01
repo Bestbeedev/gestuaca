@@ -17,8 +17,8 @@ return new class extends Migration
     {
         Schema::create('posseders', function (Blueprint $table) {
             $table->id();
-            $table->foreignForId(Niveau::class)->constrained()->onDelete('cascade');
-            $table->foreignForId(Filiere::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Niveau::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(Filiere::class)->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

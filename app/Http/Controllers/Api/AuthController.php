@@ -14,7 +14,7 @@ class AuthController extends Controller
 {
 
     // 📝 Inscription
-    public function register(Request $request)
+    public function register(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name'     => ['required', 'string', 'max:255'],
@@ -45,9 +45,9 @@ class AuthController extends Controller
         ], 201);
     }
 
-    
+
     // 🔐 Connexion
-    public function login(Request $request)
+    public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'email'    => ['required', 'string', 'email', 'max:255'],

@@ -12,7 +12,9 @@ class MatiereController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(
+            Matiere::with('etudiant:id,name,')->latest()->get(),
+        );
     }
 
     /**
