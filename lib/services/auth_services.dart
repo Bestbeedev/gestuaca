@@ -2,12 +2,16 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
+import '../stores/states.dart';
+
 class AuthService {
-  //Local Host Citech
-  //static const String baseUrl = 'http://192.168.0.9:8000/api';
-  //Host at home
+  //===================Local Host Citech==========================
+  //static const String baseUrl = 'http://192.168.0.26:8000/api';
+
+  //============================Host at home======================
   static const String baseUrl = 'http://192.168.100.7:8000/api';
-//Host at phone
+
+  //==========================Host at phone======================
   ///static const String baseUrl = 'http://10.195.132.210:8000/api';
 
   Future<Map<String, dynamic>> register({
@@ -77,6 +81,54 @@ class AuthService {
           'success': false,
           'message':
               responseData['message'] ?? 'Email ou mot de passe incorrect',
+        };
+      } else {
+        return {'success': false, 'message': 'Erreur interne serveur'};
+      }
+    } catch (e) {
+      return {'success': false, 'message': 'Erreur de connexion $e'};
+    }
+  }
+
+  Future<Map<String, dynamic>> chooseRole({required String role}) async {
+    try {
+      // Utilisation de http.post avec des paramètres de formulaire
+      final response = await http.post(
+        Uri.parse('$baseUrl/choose-role'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${await Store.getToken() ?? ''}',
+        },
+        body: jsonEncode({'role': role}),
+      );
+
+      print('choosing role: $role');
+
+      final responseData = json.decode(response.body);
+
+      developer.log(
+        'User updated successfully: $responseData',
+        name:
+            'AuthSer'
+            'vice',
+      );
+
+      if (response.statusCode == 200) {
+        return {
+          'success': true,
+          'message': responseData['message'],
+          'user': responseData['user'],
+        };
+      } else if (response.statusCode == 401) {
+        return {
+          'success': false,
+          'message': responseData['message'] ?? 'Token Invalid ou Expiré',
+        };
+      } else if (response.statusCode == 403) {
+        return {
+          'success': false,
+          'message': responseData['message'] ?? 'Role déjà choisi',
         };
       } else {
         return {'success': false, 'message': 'Erreur interne serveur'};

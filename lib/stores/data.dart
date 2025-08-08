@@ -1,57 +1,47 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
-//Navigation bar icons for the app -Director
-
+// Navigation bar icons for the app - Director
 final List<IconData> iconsDirector = [
-  CupertinoIcons.house,
-  CupertinoIcons.plus_app,
-  CupertinoIcons.money_dollar_circle,
-  CupertinoIcons.person_2,
-  CupertinoIcons.ellipsis_circle,
+  Iconsax.home,
+  Iconsax.book,
+  Iconsax.profile_2user,
+  Iconsax.user_add,
+  Iconsax.dollar_circle,
 ];
 
 final List<IconData> activeIconsDirector = [
-  CupertinoIcons.house_fill,
-  CupertinoIcons.plus_app_fill,
-  CupertinoIcons.money_dollar_circle_fill,
-  CupertinoIcons.person_2_fill,
-  CupertinoIcons.ellipsis_circle_fill,
+  Iconsax.home_15,
+  Iconsax.book_1,
+  Iconsax.profile_2user5,
+  Iconsax.user_cirlce_add,
+  Iconsax.dollar_circle,
 ];
 
-// Navigation bar icons for the app -Teachers
-
+// Navigation bar icons for the app - Teachers
 final List<IconData> iconsTeachers = [
-  Icons.dashboard_outlined,
-  Icons.people_alt_outlined,
-  Icons.book_online_outlined,
-  Icons.calendar_today_outlined,
+  Iconsax.category,
+  Iconsax.people,
+  Iconsax.book_saved,
+  Iconsax.calendar,
 ];
 
 final List<IconData> activeIconsTeachers = [
-  Icons.dashboard,
-  Icons.people_alt,
-  Icons.book,
-  Icons.calendar_today,
+  Iconsax.category5,
+  Iconsax.people5,
+  Iconsax.book_saved5,
+  Iconsax.calendar5,
 ];
 
-// Navigation bar icons for the app -Students
-
+// Navigation bar icons for the app - Students
 final List<IconData> iconsStudents = [
-  CupertinoIcons.house,
-  CupertinoIcons.book,
-  CupertinoIcons.person_add,
-  CupertinoIcons.money_dollar_circle,
+  Iconsax.home,
+  Iconsax.book,
+  Iconsax.dollar_circle,
 ];
 
 final List<IconData> activeIconsStudents = [
-  CupertinoIcons.house_fill,
-  CupertinoIcons.book_fill,
-  CupertinoIcons.person_add_solid,
-  CupertinoIcons.money_dollar_circle_fill,
+  Iconsax.home5,
+  Iconsax.book_1,
+  Iconsax.dollar_circle,
 ];
-
-// 'Accueil',
-// 'Matières',
-// 'Inscriptions',
-// 'Paiements',

@@ -10,9 +10,9 @@ class OnboardOne extends StatelessWidget {
     return Scaffold(
       body: OnboardContentWidget(
         imagePath: 'assets/svg/svg2.svg',
-        title: "Consultez vos notes et bulletins en temps réel",
+        title: "Consultez vos matieres et notes en temps réel",
         description:
-            "Avec GestuAcad, accédez à toutes vos informations scolaires en quelques clics.",
+            "Avec GestEtu, accédez à toutes vos informations scolaires en quelques clics.",
       ),
     );
   }

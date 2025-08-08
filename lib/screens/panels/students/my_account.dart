@@ -67,16 +67,20 @@ class _ProfileScreenInfoState extends State<ProfileScreenInfo> {
               info: _user != null ? _user!['email'] : "Loading...",
             ),
             const Info(
-              infoKey: "Phone",
-              info: "(239) 555-0108",
+              infoKey: "Telephone",
+              info: "+2295550108",
             ),
             const Info(
               infoKey: "Numero Matricule",
               info: "12345678944499",
             ),
             Info(
-              infoKey: "Nom d'utilisateur",
-              info: _user != null ? _user!['name'] : "Loading...",
+              infoKey: "Filiere",
+              info: 'SSRI',
+            ),
+            Info(
+              infoKey: "Niveau",
+              info: 'Licence 2',
             ),
             const SizedBox(height: 16.0),
             Align(

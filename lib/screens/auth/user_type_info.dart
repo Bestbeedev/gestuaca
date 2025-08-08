@@ -5,6 +5,7 @@ import '../../services/auth_services.dart';
 import '../../stores/states.dart';
 import '../../widgets/auth/custom_form_fields.dart';
 import '../../widgets/forms/custom_dropdown.dart';
+import '../auth/constants/lib.dart';
 
 class UserTypeInfoScreen extends StatefulWidget {
   const UserTypeInfoScreen({super.key});
@@ -30,94 +31,101 @@ class _UserTypeInfoScreenState extends State<UserTypeInfoScreen> {
     super.dispose();
   }
 
-  void _submit()async{
+  void _submit() async {
     //   // 1. Réinitialise les erreurs du formulaire
-      _formErrors.clear();
-      // 2. Valide les champs
-      if (!_formKey.currentState!.validate()) {
-        setState(() {}); // Forcer le redraw si erreurs visibles
+    _formErrors.clear();
+    // 2. Valide les champs
+    if (!_formKey.currentState!.validate()) {
+      setState(() {}); // Forcer le redraw si erreurs visibles
+      return;
+    }
+    // 3. Vérification du type d'utilisateur
+    //True role
+    print(_typeController.text.trim());
+    print('hasPaidScolarite: ${await Store.hasPaidScolarite()}');
+
+    String findRole(String type) {
+      switch (type) {
+        case 'Membre Administratifs':
+          return 'membre_administratifs';
+        case 'Enseignant':
+          return 'enseignant';
+        case 'Etudiant':
+          return 'etudiant';
+        default:
+          return '';
+      }
+    }
+
+    // 4. Appel API via AuthService
+    try {
+      final result = await _authService.chooseRole(
+        role: findRole(_typeController.text.trim()),
+      );
+
+      // 5. Gestion des erreurs serveur (par exemple credentials invalides)
+      if (result['success'] == false) {
+        setState(() {
+          _formErrors.add(result['message'] ?? 'Une erreur est survenue.');
+        });
         return;
       }
-      Navigator.pushReplacementNamed(
-        context,
-        '/auth/register',
-        arguments: {
-          'phone': _phoneController.text.trim(),
-          'type': _typeController.text.trim(),
-        },
-      );
+
+
+
+      // 6. Sauvegarde token + user
+      await Store.setToken(result['token'] ?? "");
+      await Store.saveUser(result['user'] ?? "");
+
+      if (result['user']['role'] == 'etudiant') {
+        await Store.setHasPaidScolarite(result['user']['has_paid_scolarite'] ?? false);
+      }
+
+      // 6. SnackBar de succès
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            content: Container(
+              padding: const EdgeInsets.all(12.0),
+              decoration: BoxDecoration(
+                color: Colors.green[100],
+                border: Border.all(color: Colors.green[300]!),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Text(
+                result['message'] ?? 'Enregistrement réussi',
+                style: TextStyle(color: Colors.green[600]),
+              ),
+            ),
+          ),
+        );
+      }
+
+      // 7. Redirection si le widget est toujours monté
+      if (mounted) {
+        Navigator.pushReplacementNamed(
+          context,
+          AuthConstants.redirectRole(findRole(_typeController.text.trim()))!,
+          arguments: {
+            'phone': _phoneController.text.trim(),
+            'type': _typeController.text.trim(),
+          },
+        );
+      }
+    } catch (e) {
+      // 7. Erreur réseau ou exception
+      setState(() {
+        _formErrors.add('Erreur de connexion. Veuillez réessayer.');
+      });
+    } finally {
+      setState(
+        () {},
+      ); // Redessiner le formulaire avec les erreurs ou après succès
+    }
   }
 
-  // void _submit() async {
-  //   // 1. Réinitialise les erreurs du formulaire
-  //   _formErrors.clear();
-  //   // 2. Valide les champs
-  //   if (!_formKey.currentState!.validate()) {
-  //     setState(() {}); // Forcer le redraw si erreurs visibles
-  //     return;
-  //   }
-  //
-  //   // 3. Appel API via AuthService
-  //   try {
-  //     // Vérification du type d'utilisateur
-  //
-  //     // final result = await _authService.login(
-  //     //     email:_emailController.text.trim(),
-  //     //     password: _passwordController.text
-  //     // );
-  //     //
-  //     // // 4. Gestion des erreurs serveur (par exemple credentials invalides)
-  //     // if (result['success'] == false) {
-  //     //   setState(() {
-  //     //     _formErrors.add(result['message'] ?? 'Une erreur est survenue.');
-  //     //   });
-  //     //   return;
-  //     // }
-  //     //
-  //     // // 5. Sauvegarde token + user
-  //     //
-  //     // await Store.setToken(result['token'] ?? "");
-  //     // await Store.saveUser(result['user'] ?? "");
-  //
-  //     // 6. SnackBar de succès
-  //
-  //     if(mounted){
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //         SnackBar(
-  //           backgroundColor: Colors.transparent,
-  //           elevation: 0,
-  //           content: Container(
-  //             padding: const EdgeInsets.all(12.0),
-  //             decoration: BoxDecoration(
-  //               color: Colors.green[100],
-  //               border: Border.all(color: Colors.green[300]!),
-  //               borderRadius: BorderRadius.circular(10.0),
-  //             ),
-  //             child: Text(
-  //               result['message'] ?? 'Connexion réussie',
-  //               style: TextStyle(color: Colors.green[600]),
-  //             ),
-  //           ),
-  //         ),
-  //       );
-  //     }
-  //
-  //     // 7. Redirection si le widget est toujours monté
-  //     if (mounted) {
-  //       Navigator.pushReplacementNamed(
-  //         context,
-  //         '/panels/directeur/dashboard',
-  //       );
-  //     }
-  //   } catch (e) {
-  //     // 8. Erreur réseau ou exception
-  //     setState(() {
-  //       _formErrors.add('Erreur de connexion. Veuillez réessayer.');
-  //     });
-  //   } finally {
-  //     setState(() {}); // Redessiner le formulaire avec les erreurs ou après succès
-  //   }
-  // }
 
   /// Validation du numéro de téléphone
   String? _validatePhone(String? value) {
@@ -163,8 +171,8 @@ class _UserTypeInfoScreenState extends State<UserTypeInfoScreen> {
                   ),
                   child: Text(
                     "Renseignez en premier lieu votre numéro de telephone."
-                        " Ensuite, vous pourrez choisir le type "
-                        "d'utilisateur que vous êtes.",
+                    " Ensuite, vous pourrez choisir le type "
+                    "d'utilisateur que vous êtes.",
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: Colors.grey[800],
@@ -186,23 +194,22 @@ class _UserTypeInfoScreenState extends State<UserTypeInfoScreen> {
                         prefixIcon: CupertinoIcons.phone,
                       ),
                       const SizedBox(height: 20),
-                    CustomDropdownExample(controller: _typeController,
-                      dataSource: [
-                        'Directeur des Etudes',
-                        'Enseignant',
-                        'Etudiant',
-                        'Secretaire',
-                        'Comptable',
-                        'Responsable de la scolarité',
-                      ],
-                      hintText: "S'enregistrer en tant que",
-
-                    ),
-
+                      CustomDropdownExample(
+                        controller: _typeController,
+                        dataSource: [
+                          'Etudiant',
+                          'Enseignant',
+                          'Membre Administratifs',
+                        ],
+                        hintText: "S'enregistrer en tant que",
+                      ),
+                      const SizedBox(height: 20),
                       /// AuthService error (non lié aux champs)
-                      if (_formErrors.any((e) =>
-                      !e.toLowerCase().contains('email') &&
-                          !e.toLowerCase().contains('mot de passe')))
+                      if (_formErrors.any(
+                        (e) =>
+                            !e.toLowerCase().contains('email') &&
+                            !e.toLowerCase().contains('mot de passe'),
+                      ))
                         Container(
                           padding: const EdgeInsets.all(12),
                           width: double.infinity,
@@ -212,10 +219,11 @@ class _UserTypeInfoScreenState extends State<UserTypeInfoScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
-                            _formErrors
-                                .firstWhere((e) =>
-                            !e.toLowerCase().contains('email') &&
-                                !e.toLowerCase().contains('mot de passe')),
+                            _formErrors.firstWhere(
+                              (e) =>
+                                  !e.toLowerCase().contains('email') &&
+                                  !e.toLowerCase().contains('mot de passe'),
+                            ),
                             style: const TextStyle(
                               color: Colors.red,
                               fontSize: 13,
@@ -223,6 +231,7 @@ class _UserTypeInfoScreenState extends State<UserTypeInfoScreen> {
                           ),
                         ),
                       const SizedBox(height: 12),
+
                       /// Login Button
                       SizedBox(
                         width: double.infinity,
@@ -244,7 +253,6 @@ class _UserTypeInfoScreenState extends State<UserTypeInfoScreen> {
                   ),
                 ),
                 const SizedBox(height: 16),
-
               ],
             ),
           ),

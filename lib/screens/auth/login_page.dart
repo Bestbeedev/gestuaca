@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../stores/states.dart';
 import '/services/auth_services.dart';
 import '/widgets/auth/custom_form_fields.dart';
+import 'constants/lib.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -80,7 +82,15 @@ class _LoginPageState extends State<LoginPage> {
       }
 
       if (mounted) {
-        Navigator.pushReplacementNamed(context, '/panels/directeur/dashboard');
+        Navigator.pushReplacementNamed(
+          context,
+          AuthConstants.redirectRole(result['user']['role'])!,
+        );
+        // print('User role: ${result['user']['role']}');
+        print(
+          'Redirecting to: ${AuthConstants.redirectRole(result['user']['role'])}',
+        );
+        //Navigator.pushReplacementNamed(context, '/payements');
       }
     } catch (e) {
       setState(() {
@@ -136,18 +146,37 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(53),
-                    child: CircleAvatar(
-                      radius: 65,
-                      backgroundImage: AssetImage(
-                        'assets/images/category/gestuacaLogo.png',
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 6,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/svg/mortarboard-fill.svg",
+                        width: 25,
+                        height: 25,
+                        colorFilter: ColorFilter.mode(
+                          Colors.indigo,
+                          BlendMode.srcIn,
+                        ),
                       ),
-                      backgroundColor: Colors.transparent,
-                    ),
+                      Text(
+                        "GestEtu",
+                        style: GoogleFonts.inter(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.indigo,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 12),
+                Divider(
+                  thickness: 0.5,
+                  color: Colors.grey[400],
+                ),
+                const SizedBox(height: 15),
+
                 Text(
                   "Connectez-vous",
                   style: GoogleFonts.inter(

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../stores/states.dart';
 import '/services/auth_services.dart';
@@ -68,7 +69,6 @@ class _SignupPageState extends State<SignupPage> {
       // 5. Sauvegarde token + user
       
       await Store.setToken(result['token'] ?? "");
-      await Store.saveUser(result['user'] ?? "");
       
       // 6. SnackBar de succès
       if(mounted){
@@ -172,16 +172,36 @@ class _SignupPageState extends State<SignupPage> {
               children: [
                 SizedBox(height: 8,),
                 Center(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(53),
-                    child: CircleAvatar(
-                      radius: 65,
-                      backgroundImage: AssetImage('assets/images/category/gestuacaLogo.png'),
-                      backgroundColor: Colors.transparent,
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 6,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/svg/mortarboard-fill.svg",
+                        width: 25,
+                        height: 25,
+                        colorFilter: ColorFilter.mode(
+                          Colors.indigo,
+                          BlendMode.srcIn,
+                        ),
+                      ),
+                      Text(
+                        "GestEtu",
+                        style: GoogleFonts.inter(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.indigo,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
+                Divider(
+                  thickness: 0.5,
+                  color: Colors.grey[400],
+                ),
+                const SizedBox(height: 15),
                 Text(
                   "Créez votre compte",
                   style: GoogleFonts.inter(
@@ -214,11 +234,10 @@ class _SignupPageState extends State<SignupPage> {
                   key: _formKey,
                   child: Column(
                     children: [
-
                       CustomTextFormField(
                         controller: _usernameController,
                         validator: _validateUsername,
-                        hintText: 'Nom d\'utilisateur',
+                        hintText: 'Nom complet',
                         prefixIcon: CupertinoIcons.person,
                       ),
                       const SizedBox(height: 20),

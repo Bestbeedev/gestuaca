@@ -174,7 +174,7 @@ class _DashboardStudentsState extends State<DashboardStudents> {
                               children: [
                                 Text(
                                   _user != null
-                                      ? _user!['name'] + ' ' + 'Wilfred'
+                                      ? _user!['name'] + ' ' + 'KOKO'
                                       : 'Chargement'
                                           '...',
                                   style: TextStyle(

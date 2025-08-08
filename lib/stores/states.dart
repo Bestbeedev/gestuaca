@@ -50,4 +50,15 @@ class Store {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
   }
+
+  //Fonction pour set si user a payer la scolarite
+  static Future<void> setHasPaidScolarite(bool hasPaid) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('hasPaidScolarite', hasPaid);
+  }
+  // Fonction pour obtenir si l'utilisateur a payé la scolarité
+  static Future<bool> hasPaidScolarite() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('hasPaidScolarite') ?? false;
+  }
 }

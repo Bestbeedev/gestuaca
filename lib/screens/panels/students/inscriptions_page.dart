@@ -1,17 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:gestuaca/widgets/auth/custom_form_fields.dart';
 
-import '../../widgets/auth/custom_form_fields.dart';
-import '../../widgets/forms/custom_dropdown.dart';
-
-class InscriptionStudent extends StatelessWidget {
-  const InscriptionStudent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return InscriptionsPage();
-  }
-}
-
+// ici c'est la page ou l'etudiant va s'incrire dans son universite nomme GestuAcad dans une
+// filiere et niveau exactemen en renseignant toutes les informations possible sur lui. Pour les inputformfield utilise mon CustomTextFormField contenu dans /widgets/auth/custom_form_fiels.dart
 class InscriptionsPage extends StatefulWidget {
   const InscriptionsPage({super.key});
 
@@ -24,11 +15,6 @@ class _InscriptionsPageState extends State<InscriptionsPage> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-
-  final TextEditingController _universityController = TextEditingController();
-  final TextEditingController _departmentController = TextEditingController();
-  final TextEditingController _facultyController = TextEditingController();
-  final TextEditingController _levelController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   final String _firstName = '';
@@ -202,31 +188,6 @@ class _InscriptionsPageState extends State<InscriptionsPage> {
               (value) => setState(() => _selectedUniversity = value),
             ),
             const SizedBox(height: 16),
-            CustomDropdownExample(
-              controller: _universityController,
-              dataSource: _universities,
-              hintText: "Universite",
-            ),
-            const SizedBox(height: 16),
-
-            CustomDropdownExample(
-              controller: _facultyController,
-              dataSource: _faculties,
-              hintText: "Faculte",
-            ),
-
-            const SizedBox(height: 16),
-            CustomDropdownExample(
-              controller: _levelController,
-              dataSource: _levels,
-              hintText: "Niveau",
-            ),
-            const SizedBox(height: 16),
-            CustomDropdownExample(
-              controller: _departmentController,
-              dataSource: _departments,
-              hintText: "Filieres",
-            ),
             _buildDropdown(
               'Faculté',
               _selectedFaculty,

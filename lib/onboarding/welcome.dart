@@ -13,7 +13,8 @@ class WelcomePage extends StatelessWidget {
             'Bienvenue dans votre univers scolaire digital  de gestion de '
             'votre Universite!',
         prefixText:
-            "Avec GestuAcad, accédez à toutes vos informations scolaires en quelques clics.",
+            "Avec GestEtu, accédez à toutes vos informations scolaires en "
+                "quelques clics.",
       ),
     );
   }
@@ -49,7 +50,7 @@ class WelcomeWidget extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           Text(
-            'GestuAcad',
+            'GestEtu',
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
               fontWeight: FontWeight.bold,
               color: Colors.blueAccent[700],

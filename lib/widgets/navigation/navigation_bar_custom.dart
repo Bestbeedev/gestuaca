@@ -11,7 +11,8 @@ class NavigationBarCustom extends StatelessWidget {
   final Color color;
 
   const NavigationBarCustom({super.key,required this.currentIndex, required
-  this.onTap, required this.icons, required this.activeIcons,this.backgroundColor = Colors.white,
+  this.onTap, required this.icons, required this.activeIcons,this
+      .backgroundColor = Colors.transparent,
     this.color = Colors.indigo,this.colorIcons = Colors.white});
 
   @override
@@ -19,7 +20,7 @@ class NavigationBarCustom extends StatelessWidget {
     return CurvedNavigationBar(
       index: currentIndex,
       height: 65,
-      backgroundColor: backgroundColor,
+      backgroundColor: Colors.white,
       color: Colors.indigo,
       onTap: (index) {
         onTap(index);

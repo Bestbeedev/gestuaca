@@ -1,43 +1,35 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestuaca/screens/panels/directeur/course_page.dart';
-import 'package:gestuaca/screens/panels/directeur/dashboard.dart';
-import 'package:gestuaca/screens/panels/directeur/inscriptions_page.dart';
-import 'package:gestuaca/screens/panels/directeur/payment_page.dart';
-import 'package:gestuaca/screens/panels/directeur/users_page.dart';
+import 'package:gestuaca/screens/panels/students/payments_page.dart';
 import 'package:iconsax/iconsax.dart';
 import '../../../stores/data.dart';
 import '../../../widgets/navigation/navigation_bar_custom.dart';
+import 'dashboard.dart';
+import 'course_page.dart';
+import 'inscriptions_page.dart';
 
-class DirecteurLayout extends StatefulWidget {
-  const DirecteurLayout({super.key});
-
+class StudentsLayout extends StatefulWidget {
+  const StudentsLayout({super.key});
 
   @override
-  State<DirecteurLayout> createState() => _DirecteurLayoutState();
+  State<StudentsLayout> createState() => _StudentsLayoutState();
 }
 
-int _currentIndex = 0;
+class _StudentsLayoutState extends State<StudentsLayout> {
+  int _currentIndex = 0;
 
-final List<Widget> _pages = [
-  DashboardPage(),
-  CoursePageDirector(),
-  UsersPage(),
-  //TeachersPageDirector(),
-  InscriptionsPageDirector(),
-  PaymentPageDirector(),
-];
+  final List<Widget> _pages = [
+    DashboardStudents(),
+    CoursesPage(),
+    PaymentsPage(),
+  ];
 
-final List<String> titlePages = [
-  'Accueil',
-  'Matières',
-  'Etudiants',
-  //'Enseignants',
-  'Inscriptions',
-  'Paiements',
-];
+  final List<String> titlePages = [
+    'Accueil',
+    'Matières',
+    'Paiements',
+  ];
 
-class _DirecteurLayoutState extends State<DirecteurLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,8 +78,8 @@ class _DirecteurLayoutState extends State<DirecteurLayout> {
             _currentIndex = index;
           });
         },
-        icons: iconsDirector,
-        activeIcons: activeIconsDirector,
+        icons: iconsStudents,
+        activeIcons: activeIconsStudents,
       ),
     );
   }
@@ -99,12 +91,11 @@ class DrawerWidget extends StatelessWidget {
     'Matières',
     'Inscriptions',
     'Paiements',
-    'Rapports',
   ];
 
   final Function(int) onPageSelected;
 
-  DrawerWidget({super.key, required this.onPageSelected});
+   DrawerWidget({super.key, required this.onPageSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -117,22 +108,22 @@ class DrawerWidget extends StatelessWidget {
           DrawerHeader(
             decoration: BoxDecoration(color: Colors.indigo[700]),
             child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.asset(
-                  'assets/images/category/gestuacaLogo.png',
-                  height: 100,
-                  width: 100,
-                  fit: BoxFit.contain,
-                  alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.all(18.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.asset(
+                    'assets/images/category/gestuacaLogo.png',
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.contain,
+                    alignment: Alignment.centerLeft,
+                  ),
                 ),
               ),
-            ),
           ),
           ...List.generate(_listPages.length, (index) {
             return ListTile(
-              leading: Icon(iconsDirector[index]),
+              leading: Icon(iconsStudents[index]),
               title: Text(_listPages[index]),
               onTap: () {
                 onPageSelected(index);
@@ -145,3 +136,4 @@ class DrawerWidget extends StatelessWidget {
     );
   }
 }
+

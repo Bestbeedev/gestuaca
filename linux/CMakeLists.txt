@@ -13,7 +13,7 @@ set(APPLICATION_ID "com.example.gestuaca")
 # versions of CMake.
 cmake_policy(SET CMP0063 NEW)
 
-# Load bundled libraries from the lib/ directory relative to the binary.
+# Load bundled libraries from the lib.dart/ directory relative to the binary.
 set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
 
 # Root filesystem for cross-building.

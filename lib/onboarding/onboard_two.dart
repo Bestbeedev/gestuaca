@@ -15,7 +15,7 @@ class OnboardTwo extends StatelessWidget {
                 "frais et suivez vos dossiers en toute transparence.",
         imagePath: 'assets/svg/svg3.svg',
         prefixText:
-            "Avec GestuAcad, accédez à toutes vos informations scolaires en quelques clics.",
+            "Avec GestEtu, accédez à toutes vos informations scolaires en quelques clics.",
       ),
     );
   }
